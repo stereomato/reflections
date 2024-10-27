@@ -8,6 +8,7 @@ typedef float Matrix4x4 [4][4];
 typedef float Matrix4x6 [4][6];
 
 Matrix4x4 transformationMatrix;
+
 Matrix4x4 testMatrix = {
 	{0, 0, 0.2, 0.2},
 	{0, 0.2, 0.2, 0},
@@ -21,6 +22,14 @@ Matrix4x6 testMatrix2 = {
 	{0, 0, 0, 0,-0.35, -0.35},
 	{1, 1, 1, 1,1, 1},
 };
+
+Matrix4x6 profMatrix = {
+	{0.05, 0.045, 0.095, 0.025, 0.075, 0},
+	{0.14, 0.015, 0.015, 0.015, 0.015, 0},
+	{-0.05, -0.075, -0.075, -0.025, -0.025, 0},
+	{1,1,1,1,1}
+};
+
 Matrix4x4 test1 = {
 	{1, 2, 3, 4},
 	{5, 6, 7, 8},
@@ -35,7 +44,7 @@ Matrix4x4 test2 = {
 	{29, 30, 31, 32},
 };
 
-GLint X=300,Y=300,Z=300;
+//GLint X=0.3,Y=0.3,Z=0.3;
 
 void printMatrix(Matrix4x4 toPrint){
 	for (int j = 0; j < 4; j++)
@@ -70,7 +79,6 @@ void printMatrix2(Matrix4x6 toPrint){
 		}
 	}
 }
-
 
 void showAxis(){
 	glColor3i(0,0,0);
@@ -294,6 +302,87 @@ void draw(Matrix4x6 toDraw, int numVertex){
 	
 }
 
+void drawProf(Matrix4x6 toDraw)
+{         //muestra la figura
+	int i;
+	glColor3f (0.7, 0.4, 0.7);
+	std::cout << "DRAWPROF\n";
+	glBegin(GL_POLYGON);
+	// p1, p2, p3
+	std::cout << toDraw[0][0] << " " << toDraw[1][0] << " " << toDraw[2][0] << "\n";
+	glVertex3f(toDraw[0][0], toDraw[1][0], toDraw[2][0]);
+	glVertex3f(toDraw[0][1], toDraw[1][1], toDraw[2][1]);
+	glVertex3f(toDraw[0][2], toDraw[1][2], toDraw[2][2]);
+	
+	/*
+	glVertex3f(a[0][0],a[0][1],a[0][2]);
+	glVertex3f(a[1][0],a[1][1],a[1][2]);
+	glVertex3f(a[2][0],a[2][1],a[2][2]);
+	*/
+	glEnd();
+
+	glColor3f (0.8, 0.6, 0.5);
+	// p1, p2, p4
+	glBegin(GL_POLYGON);
+	glVertex3f(toDraw[0][0], toDraw[1][0], toDraw[2][0]);
+	glVertex3f(toDraw[0][1], toDraw[1][1], toDraw[2][1]);
+	glVertex3f(toDraw[0][3], toDraw[1][3], toDraw[2][3]);
+	/*
+	glVertex3s(a[0][0],a[0][1],a[0][2]);
+	glVertex3s(a[1][0],a[1][1],a[1][2]);
+	glVertex3s(a[3][0],a[3][1],a[3][2]);
+	*/
+	glEnd();
+
+	glColor3f (0.2, 0.4, 0.7);
+	// p1, p3, p5
+	
+	glBegin(GL_POLYGON);
+		glVertex3f(toDraw[0][0], toDraw[1][0], toDraw[2][0]);
+		glVertex3f(toDraw[0][1], toDraw[1][1], toDraw[2][1]);
+		glVertex3f(toDraw[0][4], toDraw[1][4], toDraw[2][4]);
+
+		/*
+		glVertex3f(a[0][0],a[0][1],a[0][2]);
+		glVertex3f(a[2][0],a[2][1],a[2][2]);
+		glVertex3f(a[4][0],a[4][1],a[4][2]);
+		*/
+	glEnd();
+	
+
+
+	glColor3f (0.5, 0.4, 0.3);
+	// p1, p5, p4
+	
+	glBegin(GL_POLYGON);
+		glVertex3f(toDraw[0][0], toDraw[1][0], toDraw[2][0]);
+		glVertex3f(toDraw[0][4], toDraw[1][4], toDraw[2][4]);
+		glVertex3f(toDraw[0][3], toDraw[1][3], toDraw[2][3]);
+		/*
+		glVertex3s(a[0][0],a[0][1],a[0][2]);
+		glVertex3s(a[4][0],a[4][1],a[4][2]);
+		glVertex3s(a[3][0],a[3][1],a[3][2]);
+		*/
+	glEnd();
+
+	glColor3f (0.5, 0.6, 0.2);
+	// p1, p3, p5, p4
+	
+	glBegin(GL_POLYGON);
+		glVertex3f(toDraw[0][0], toDraw[1][0], toDraw[2][0]);
+		glVertex3f(toDraw[0][2], toDraw[1][2], toDraw[2][2]);
+		glVertex3f(toDraw[0][4], toDraw[1][4], toDraw[2][4]);
+		glVertex3f(toDraw[0][3], toDraw[1][3], toDraw[2][3]);
+		/*
+		glVertex3s(a[1][0],a[1][1],a[1][2]);
+		glVertex3s(a[2][0],a[2][1],a[2][2]);
+		glVertex3s(a[4][0],a[4][1],a[4][2]);
+		glVertex3s(a[3][0],a[3][1],a[3][2]);
+		*/
+	glEnd();
+	
+}
+
 void display(){
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(1,1,1,1); //COLOR DE FONDO
@@ -310,15 +399,22 @@ void display(){
 	Matrix4x6 resultMatrix;
 	resetMatrix2(resultMatrix);
 
-	glColor3f(0,0,1);
+	//glColor3f(0,0,1);
 	//scale(0,0,0,1.25, 1.25, 1.25, testMatrix2, resultMatrix);
 
 	//reflectYZ(testMatrix2,resultMatrix);
 
-	translate(0.5,-0.75,0.5,testMatrix2, resultMatrix);
-	draw(resultMatrix,6);
+	//translate(0.5,-0.75,0.5,testMatrix2, resultMatrix);
+	//draw(resultMatrix,6);
 
-	
+	scale(profMatrix[0][0],profMatrix[1][0],profMatrix[2][0], 5,5,5,profMatrix, resultMatrix);
+	//translate(0.5,0.5,0.5,profMatrix, resultMatrix);
+	drawProf(resultMatrix);
+	drawProf(profMatrix);
+
+	glPushMatrix();
+		showAxis();
+	glPopMatrix();
 
 	
 	//resetMatrix(resultMatrix);
@@ -331,7 +427,7 @@ void display(){
 	glPopMatrix();*/
 
 	std::cout << "PRINTING TESTMATRIX\n";
-	printMatrix2(testMatrix2);
+	printMatrix2(resultMatrix);
 	
 	/*
 	Matrix4x4 testMatrix = {
@@ -356,9 +452,12 @@ void init(){
 	/* Setup the view of the cube. */
 	glMatrixMode(GL_PROJECTION);
 	//glOrtho(-X, X, -Y, Y, -Z, Z);
+	glOrtho(-2,2,-2,2,-2,2);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	gluLookAt(0.1, 0.1, 0.1, 0.0, 0.0, 0.0, 0.0f, 1.0f, 0.0f);
+	gluLookAt(0,0, 0.5, 0.0, 0.0, 0.0, 0.0f, 1.0f, 0.0f);
+	
+	
 }
 
 int main(int argc, char **argv){
